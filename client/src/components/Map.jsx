@@ -120,6 +120,8 @@ const Map = ({ trips }) => {
     setSelectedTrip((prevTrip) => (prevTrip === trip ? null : trip));
   }, []);
 
+  const tripsArray = Array.isArray(trips) ? trips : [];
+
   return (
     <MapContainer
       center={[40.7128, -74.006]}
@@ -131,7 +133,7 @@ const Map = ({ trips }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {trips.map((trip, index) => (
+      {tripsArray.map((trip, index) => (
         <CustomMarker
           key={index}
           trip={trip}

@@ -51,7 +51,7 @@ const Navigation = () => {
           className="hidden md:flex lg:flex space-x-6 text-[#FFD60A] text-lg font-semibold items-center" 
           style={{ fontFamily: 'Poppins' }}
         >
-          {[
+          {[ 
             { name: 'Home', path: '/' },
             { name: 'Charts', path: '/#Charts' },
             { name: 'Maps', path: '/#Maps' },
@@ -60,12 +60,12 @@ const Navigation = () => {
               key={item.path} 
               className="nav-item group transition-all duration-100 ease-in-out"
             >
-              <a 
+              <button 
+                onClick={() => handleNavigation(item.path)} 
                 className="nav-link bg-left-bottom bg-gradient-to-r from-[#FFC300] to-[#FFC300] bg-[length:0%_3px] bg-no-repeat group-hover:bg-[length:100%_3px] transition-all duration-300 ease-out cursor-pointer"
-                onClick={() => handleNavigation(item.path)}
               >
                 {item.name}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
@@ -101,18 +101,18 @@ const Navigation = () => {
             className="absolute top-full left-0 w-full font-semibold bg-white py-4 lg:hidden shadow-lg"
           >
             <ul className="text-center space-y-4">
-              {[
+              {[ 
                 { name: 'Home', path: '/' },
                 { name: 'Charts', path: '/#Charts' },
                 { name: 'Maps', path: '/#Maps' },
               ].map((item) => (
                 <li key={item.path}>
-                  <a 
+                  <button 
                     onClick={() => handleNavigation(item.path)}
                     className="text-[#137C13] cursor-pointer block py-2"
                   >
                     {item.name}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
