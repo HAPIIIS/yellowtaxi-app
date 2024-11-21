@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  body {
+    @apply bg-gray-100 min-h-screen text-gray-900;
+  }
+}
+
+/* Custom styles for the chart container */
+@layer components {
+  .chart-container {
+    @apply bg-white p-6 rounded-lg shadow-lg;
+  }
+}
+
+/* Custom loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Custom tooltip styles for Recharts */
+.recharts-tooltip-wrapper {
+  @apply !shadow-lg;
+}
+
+.recharts-default-tooltip {
+  @apply !bg-white !border-none !shadow-lg !rounded-lg !p-3;
+}
+
+/* Better text readability for chart labels */
+.recharts-text {
+  @apply !fill-current !text-gray-600;
+}
+
+/* Custom scrollbar for overflow content */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
