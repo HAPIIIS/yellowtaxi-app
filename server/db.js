@@ -1,13 +1,13 @@
-const pgp = require('pg-promise')();
+require('dotenv').config();
+const { Pool } = require('pg');
 
-const connection = {
-    host: "localhost",
-    port: 5432,
-    database: "yellow-taxi",
-    user: "postgres",
-    password: "Prokontol69",
-};
+const connectionString = process.env.DATABASE_URL;
 
-const db = pgp(connection);
+const pool = new Pool({
+  connectionString: connectionString,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
-module.exports = db;
+module.exports = pool;

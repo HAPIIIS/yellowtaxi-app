@@ -1,16 +1,14 @@
 const db = require('./db');
-const axios = require('axios'); // Fetch data from the API
+const axios = require('axios');
 
 async function seed() {
     try {
-        // Fetch data from the API
         const response = await axios.get('https://data.cityofnewyork.us/resource/gkne-dk5s.json');
         const trips = response.data;
 
-        // Insert trips into the database
         await Promise.all(
             trips.map(trip =>
-                db.none(
+                db.query(
                     `INSERT INTO trips 
                      (vendor_id, pickup_datetime, dropoff_datetime, passenger_count, trip_distance, 
                       pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude, 
@@ -39,6 +37,8 @@ async function seed() {
                 )
             )
         );
+
+        console.log('Seeding completed!');
     } catch (err) {
         console.error('Error seeding database:', err);
     }

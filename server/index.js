@@ -31,6 +31,16 @@ app.get('/api/trips', async (req, res) => {
   }
 });
 
+app.get('/test-db', async (req, res) => {
+  try {
+    const result = await db.any('SELECT NOW()');
+    res.json(result); 
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({ error: 'Failed to connect to database' });
+  }
+});
+
 app.get('/api/trips/filter', async (req, res) => {
   const { payment_type, min_fare, max_fare, distance, time_range } = req.query;
   let query = 'SELECT * FROM trips WHERE 1=1';
