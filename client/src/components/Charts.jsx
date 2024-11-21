@@ -156,7 +156,7 @@
 // };
 
 // export default Charts;
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { BarChart, CartesianGrid, XAxis, YAxis, Bar, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Charts = ({ data }) => {
@@ -176,15 +176,18 @@ const Charts = ({ data }) => {
     if (!Array.isArray(data) || data.length === 0) return [];
 
     return data
-      .filter((trip) => trip[selectedMetric] != null && !isNaN(trip[selectedMetric])) 
+      .filter((trip) => {
+        const metricValue = trip[selectedMetric];
+        return metricValue != null && !isNaN(metricValue); // Ensures valid data
+      })
       .map((trip, index) => ({
         tripId: trip.pickup_datetime
           ? new Date(trip.pickup_datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           : `Trip ${index + 1}`,
-        value: Number(trip[selectedMetric]), 
+        value: Number(trip[selectedMetric]),
         id: index,
       }))
-      .slice(0, 20); // Limit data points
+      .slice(0, 20); // Limit data points to improve performance
   }, [data, selectedMetric]);
 
   const formatTooltipValue = (value) => {
