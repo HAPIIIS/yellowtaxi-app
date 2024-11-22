@@ -18,6 +18,7 @@ const Home = () => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const fetchFilteredTrips = async (currentFilters) => {
     try {
@@ -25,7 +26,7 @@ const Home = () => {
       setError(null);
 
       // Fetch data from the API
-      const response = await axios.get("/api/data");
+      const response = await axios.get(API_URL);
       let filteredTrips = response.data;
 
       // Apply filters to the data
