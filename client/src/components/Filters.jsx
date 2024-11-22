@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Grid, Select, MenuItem, FormControl, InputLabel, Button } from "@mui/material";
 
 const Filters = ({ onApplyFilters }) => {
@@ -9,12 +9,13 @@ const Filters = ({ onApplyFilters }) => {
     paymentType: "",
   });
 
-  const handleFilterChange = (name, value) => {
+  // Use useCallback to memoize the filter change handler and prevent unnecessary re-renders
+  const handleFilterChange = useCallback((name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
   const handleApplyFilters = () => {
-    onApplyFilters(filters); 
+    onApplyFilters(filters);  // Call the function to apply the filters
   };
 
   return (
