@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -43,8 +43,8 @@ const CustomMarker = React.memo(({ trip, onMarkerClick }) => {
       <Popup>
         <div>
           <h4>Vendor: {trip.vendor_id}</h4>
-          <h4>Fare: ${parseFloat(trip.fare_amount).toFixed(2)}</h4>          
-          <h4>Payment: {trip.payment_type}</h4>          
+          <h4>Fare: ${parseFloat(trip.fare_amount).toFixed(2)}</h4>
+          <h4>Payment: {trip.payment_type}</h4>
           <p>Distance: {parseFloat(trip.trip_distance).toFixed(2)} km</p>
           <p>Pickup Time: {new Date(trip.pickup_datetime).toLocaleString()}</p>
           <p>Dropoff Time: {new Date(trip.dropoff_datetime).toLocaleString()}</p>
@@ -113,14 +113,42 @@ const RouteLayer = React.memo(({ trip }) => {
   return null;
 });
 
-const Map = ({ trips }) => {
+const Map = () => {
+  const [trips, setTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedTrip, setSelectedTrip] = useState(null);
 
   const handleMarkerClick = useCallback((trip) => {
     setSelectedTrip((prevTrip) => (prevTrip === trip ? null : trip));
   }, []);
 
-  const tripsArray = Array.isArray(trips) ? trips : [];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://yellowtaxi-app-server.vercel.app/api/data';
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const result = await response.json();
+        setTrips(result);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch data');
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading map data...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <MapContainer
@@ -133,7 +161,7 @@ const Map = ({ trips }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {tripsArray.map((trip, index) => (
+      {trips.map((trip, index) => (
         <CustomMarker
           key={index}
           trip={trip}
